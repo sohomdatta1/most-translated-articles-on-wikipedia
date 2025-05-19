@@ -1,0 +1,34 @@
+<style>
+.wikitable {
+    background-color: #f8f9fa;
+    color: #202122;
+    margin: 1em 0;
+    border: 1px solid #a2a9b1;
+    border-collapse: collapse
+}
+
+.wikitable>tr>th,.wikitable>tr>td,.wikitable>*>tr>th,.wikitable>*>tr>td {
+    border: 1px solid #a2a9b1;
+    padding: .2em .4em
+}
+
+.wikitable>tr>th,.wikitable>*>tr>th {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #eaecf0;
+    text-align: center
+}
+
+.wikitable>caption {
+    font-weight: 700
+}
+</style>
+This is a list of article ranked by the number of language editions in which they appear. (Last updated {TIMESTAMP})<br>The list is generated using <a href="https://github.com/sohomdatta1/most-translated-articles-on-wikipedia/blob/main/main.py">this python file</a> running on Wikimedia's Toolforge instance :).
+The code is released under the MIT license, feel free to fork, remix or use this list in any way you like. (If you really like it, you could even star it! 😉)
+<table class="wikitable">
+<tbody>
+<tr><th>Rank</th><th>Item</th><th>Label</th><th>Count</th></tr>
+{TABLE}
+</tbody>
+</table>
