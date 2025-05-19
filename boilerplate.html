@@ -1,4 +1,7 @@
 <style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
 .wikitable {
     background-color: #f8f9fa;
     color: #202122;
@@ -24,11 +27,28 @@
     font-weight: 700
 }
 </style>
-This is a list of article ranked by the number of language editions in which they appear. (Last updated {TIMESTAMP})<br>The list is generated using <a href="https://github.com/sohomdatta1/most-translated-articles-on-wikipedia/blob/main/main.py">this python file</a> running on Wikimedia's Toolforge instance :).
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const el = document.getElementById("timestamp");
+    if (el) {
+        const utcString = el.dataset.utc;
+        const date = new Date(utcString);
+        const utcFormatted = date.toLocaleString(undefined, {
+            dateStyle: "medium",
+            timeStyle: "short",
+            timeZone: "UTC"
+        });
+        el.textContent = utcFormatted + " (UTC)";
+    }
+});
+</script>
+This is a list of article ranked by the number of language editions in which they appear. Last updated <span id="timestamp" data-utc="{TIMESTAMP}">loading...</span><br>The list is generated using <a href="https://github.com/sohomdatta1/most-translated-articles-on-wikipedia/blob/main/main.py">this python file</a> running on Wikimedia's Toolforge instance :).
 The code is released under the MIT license, feel free to fork, remix or use this list in any way you like. (If you really like it, you could even star it! 😉)
 <table class="wikitable">
+    <thead>
+        <tr><th>Rank</th><th>Item</th><th>Label</th><th>Count</th></tr>
+    </thead>
 <tbody>
-<tr><th>Rank</th><th>Item</th><th>Label</th><th>Count</th></tr>
 {TABLE}
 </tbody>
 </table>

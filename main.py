@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-#licensed under CC-Zero: https://creativecommons.org/publicdomain/zero/1.0
+# licensed under CC-Zero: https://creativecommons.org/publicdomain/zero/1.0
 
 from os.path import expanduser
 from time import strftime
@@ -8,14 +8,7 @@ from time import strftime
 import time
 import mariadb
 import requests as r
-import pywikibot as pwb
 import json
-
-
-HEADER = 'A list of items with the most sitelinks. Data as of <onlyinclude>{update_timestamp}</onlyinclude>.\n\n{{| class="wikitable sortable" style="width:100%; margin:auto;"\n|-\n! Item !! Sitelinks\n'
-TABLE_ROW = '|-\n| {{{{Q|{qid}}}}} || {cnt}\n'
-FOOTER = '|}\n\n[[Category:Wikidata statistics|Most sitelinked items]] [[Category:Database reports|Most sitelinked items]]'
-
 
 def make_report() -> str:
     db = mariadb.connect(
@@ -25,7 +18,18 @@ def make_report() -> str:
     )
     cur = db.cursor(dictionary=True)
 
-    query = 'SELECT ips_item_id, COUNT(*) AS cnt FROM wb_items_per_site GROUP BY ips_item_id ORDER BY cnt DESC LIMIT 50000'
+    query = """SELECT ips_item_id, COUNT(*) AS cnt
+FROM wb_items_per_site 
+WHERE ips_site_id NOT LIKE '%wikisource'
+  AND ips_site_id NOT LIKE '%wikibooks'
+  AND ips_site_id NOT LIKE '%wikivoyage'
+  AND ips_site_id NOT LIKE '%wikiquote'
+  AND ips_site_id != 'commonswiki'
+  AND ips_site_id NOT LIKE '%wikiversity'
+  AND ips_site_id NOT LIKE 'species'
+  AND ips_site_id NOT LIKE '%wikinews'
+GROUP BY ips_item_id
+ORDER BY cnt DESC LIMIT 50000"""
     cur.execute(query)
 
     text = ''
@@ -60,6 +64,8 @@ def make_report() -> str:
                     ll = x[1]
                     break
             alldata_with_names.append((qid, site, ll))
+
+    alldata_with_names.sort(key=lambda x: x[2], reverse=True)
     cur.close()
     db.close()
     json.dump(alldata_with_names, open('alldata.json', 'w+'))
